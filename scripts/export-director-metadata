@@ -19,8 +19,7 @@ if om_cmd curl -p /api/v0/deployed/director/credentials/uaa_bbr_client_credentia
   BOSH_CLIENT_SECRET="$(jq -r .credential.value.password bbr_client.json)"
 
   bosh_product_guid="$(om_cmd curl -p /api/v0/deployed/products | jq -r '.[] | select(.type=="p-bosh") | .guid')"
-  #BOSH_ENVIRONMENT="$(om_cmd curl -p "/api/v0/deployed/products/${bosh_product_guid}/static_ips" | jq -r .[0].ips[0])"
-  BOSH_ENVIRONMENT="bosh.kirklab.io"
+  BOSH_ENVIRONMENT="$(om_cmd curl -p "/api/v0/deployed/products/${bosh_product_guid}/static_ips" | jq -r .[0].ips[0])"
 
   om_cmd curl -p /api/v0/certificate_authorities | jq -r '.certificate_authorities | last.cert_pem' > "$BOSH_CA_CERT_PATH"
 else
